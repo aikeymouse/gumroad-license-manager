@@ -1,0 +1,21 @@
+{{define "products-content"}}
+{{if .Products}}
+    {{range $index, $product := .Products}}
+    <div class="product-item">
+        <div class="product-name">{{$product.Name}}</div>
+        <div class="product-price">${{printf "%.2f" (div (mulF $product.Price 1.0) 100.0)}}</div>
+        {{if $product.Description}}
+        <div class="product-description">{{unescape $product.Description}}</div>
+        {{end}}
+        <div class="product-actions">
+            <a href="/licenses/{{$index}}" class="view-licenses">View Licenses</a>
+            <a href="/sales/{{$index}}" class="view-sales">View Sales</a>
+        </div>
+    </div>
+    {{end}}
+{{else}}
+    <div class="empty-state">
+        <p>No products found.</p>
+    </div>
+{{end}}
+{{end}}

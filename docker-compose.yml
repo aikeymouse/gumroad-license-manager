@@ -1,0 +1,12 @@
+name: gumroad-license-manager
+
+services:
+  gumroad-license-manager:
+    build: .
+    ports:
+      - "8086:8086"
+    volumes:
+      - ./config.json:/root/config.json:ro
+    environment:
+      - PORT=8086
+    restart: unless-stopped

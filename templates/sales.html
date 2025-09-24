@@ -1,0 +1,48 @@
+{{define "sales-content"}}
+{{if .Sales}}
+<table>
+    <thead>
+        <tr>
+            <th>Sale Date</th>
+            <th>Order #</th>
+            <th>Email</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Gumroad Fee</th>
+            <th>Currency</th>
+            <th>Status</th>
+            <th>License Key</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{range .Sales}}
+        <tr>
+            <td class="timestamp">{{if .Daystamp}}{{.Daystamp}}{{else}}{{.CreatedAt}}{{end}}</td>
+            <td>{{.OrderID}}</td>
+            <td>{{.Email}}</td>
+            <td class="price">${{printf "%.2f" (div (mulF .Price 1.0) 100.0)}}</td>
+            <td>{{.Quantity}}</td>
+            <td class="fee">${{printf "%.2f" (div (mulF .GumroadFee 1.0) 100.0)}}</td>
+            <td>{{.Currency}}</td>
+            <td class="status">
+                {{if .Refunded}}
+                    <span class="status-refunded">Refunded</span>
+                {{else if .Disputed}}
+                    <span class="status-disputed">Disputed</span>
+                {{else if .Chargebacked}}
+                    <span class="status-chargebacked">Chargebacked</span>
+                {{else}}
+                    <span class="status-completed">Completed</span>
+                {{end}}
+            </td>
+            <td class="license-key">{{if .LicenseKey}}{{.LicenseKey}}{{else}}-{{end}}</td>
+        </tr>
+        {{end}}
+    </tbody>
+</table>
+{{else}}
+<div class="empty-state">
+    <p>No sales found for this product.</p>
+</div>
+{{end}}
+{{end}}

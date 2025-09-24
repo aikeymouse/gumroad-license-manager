@@ -1,0 +1,54 @@
+{{define "licenses-content"}}
+<!-- License Key Validation Form -->
+<div class="validation-form">
+    <h3>Validate License Key</h3>
+    <form id="validateLicenseForm">
+        <div class="form-group">
+            <input type="text" id="licenseKey" placeholder="Enter license key to validate..." required>
+            <button type="submit" class="btn btn-primary">Validate</button>
+        </div>
+    </form>
+    <div id="validationResult" class="validation-result" style="display: none;"></div>
+</div>
+
+{{if .Licenses}}
+<table>
+    <thead>
+        <tr>
+            <th>License Key</th>
+            <th>Product Name</th>
+            <th>Purchaser Email</th>
+            <th>Sale Date</th>
+            <th>Refunded</th>
+            <th>Disputed</th>
+            <th>Chargebacked</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{range .Licenses}}
+        <tr>
+            <td><span class="license-key">{{.LicenseKey}}</span></td>
+            <td>{{.ProductName}}</td>
+            <td>{{.PurchaserEmail}}</td>
+            <td>{{.SaleDatetime}}</td>
+            <td class="{{if .Refunded}}status-true{{else}}status-false{{end}}">{{.Refunded}}</td>
+            <td class="{{if .Disputed}}status-true{{else}}status-false{{end}}">{{.Disputed}}</td>
+            <td class="{{if .Chargebacked}}status-true{{else}}status-false{{end}}">{{.Chargebacked}}</td>
+        </tr>
+        {{end}}
+    </tbody>
+</table>
+{{else}}
+<div class="empty-state">
+    <p>No licenses found for this product.</p>
+</div>
+{{end}}
+
+<script>
+// Pass data to JavaScript
+window.pageData = {
+    productID: "{{.ProductID}}"
+};
+</script>
+<script src="/static/js/license-validation.js"></script>
+{{end}}

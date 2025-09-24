@@ -1,0 +1,93 @@
+{{define "api-log-content"}}
+{{if .APICallsResult}}
+
+<table>
+    <thead>
+        <tr>
+            <th>Time</th>
+            <th>Method</th>
+            <th>URL</th>
+            <th>Status</th>
+            <th>Duration</th>
+            <th>Error</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{range $index, $call := .APICallsResult}}
+        <tr class="api-call-row" onclick="showModal('{{ $index }}')">
+            <td>{{ $call.Timestamp.Format "15:04:05" }}</td>
+            <td>{{ $call.Method }}</td>
+            <td>{{ $call.URL }}</td>
+            <td>{{ $call.Status }}</td>
+            <td>{{ durationMs $call.Duration }}ms</td>
+            <td>{{ $call.Error }}</td>
+        </tr>
+        {{end}}
+    </tbody>
+</table>
+
+<!-- Modal Dialog -->
+<div id="apiModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="close">&times;</span>
+            <h2>API Call Details</h2>
+        </div>
+        
+        <!-- Fixed Request Information Section -->
+        <div class="modal-section fixed-section" style="padding: 20px; padding-bottom: 0; background-color: #fefefe; border-bottom: 1px solid #eee;">
+            <h3>Request Information</h3>
+            <div class="info-grid">
+                <div class="info-item">
+                    <label>Method:</label>
+                    <span id="modal-method"></span>
+                </div>
+                <div class="info-item">
+                    <label>URL:</label>
+                    <span id="modal-url"></span>
+                </div>
+                <div class="info-item">
+                    <label>Timestamp:</label>
+                    <span id="modal-timestamp"></span>
+                </div>
+                <div class="info-item">
+                    <label>Duration:</label>
+                    <span id="modal-duration"></span>
+                </div>
+                <div class="info-item">
+                    <label>Status:</label>
+                    <span id="modal-status"></span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Scrollable Content Area -->
+        <div class="modal-body">
+            <div class="scrollable-container">
+                <div class="modal-section">
+                    <h3>Request Body</h3>
+                    <pre id="modal-request-body"></pre>
+                </div>
+
+                <div class="modal-section">
+                    <h3>Response Body</h3>
+                    <pre id="modal-response"></pre>
+                </div>
+
+                <div class="modal-section" id="modal-error-section" style="display: none;">
+                    <h3>Error</h3>
+                    <pre id="modal-error"></pre>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/static/js/api-log-modal.js"></script>
+
+{{else}}
+<div class="empty-state">
+    <p>No API calls logged yet.</p>
+</div>
+{{end}}
+{{end}}

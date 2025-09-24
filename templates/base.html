@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{.Title}} - Gumroad License Manager</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="nav">
+            <a href="/" {{if eq .CurrentPage "products"}}class="active"{{end}}>Products</a>
+            <a href="/api-log" {{if eq .CurrentPage "api-log"}}class="active"{{end}}>API Call Log</a>
+        </div>
+        
+        {{if .BackLink}}
+        <div class="page-header">
+            <a href="{{.BackLink}}" class="back-link">← Back</a>
+            <h1>{{.Title}}</h1>
+        </div>
+        {{else}}
+        <h1>{{.Title}}</h1>
+        {{end}}
+        
+        {{if eq .CurrentPage "products"}}
+            {{template "products-content" .}}
+        {{else if eq .CurrentPage "setup"}}
+            {{template "setup-content" .}}
+        {{else if eq .CurrentPage "licenses"}}
+            {{template "licenses-content" .}}
+        {{else if eq .CurrentPage "sales"}}
+            {{template "sales-content" .}}
+        {{else if eq .CurrentPage "api-log"}}
+            {{template "api-log-content" .}}
+        {{else}}
+            {{block "content" .}}{{end}}
+        {{end}}
+    </div>
+    
+    <script src="/static/js/app.js"></script>
+</body>
+</html>
